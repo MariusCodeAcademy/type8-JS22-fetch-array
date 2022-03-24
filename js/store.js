@@ -14,3 +14,5 @@ getProduct();
 // 2. kartoti ta htmla konteineryje su duomenimis is fake store ir su kurti 20 prekiu
 
 // 3. sukurti funkcija kuriai padavus ratinga, ji grazina zvaigzdutes.
+
+console.log('a: ', a);
