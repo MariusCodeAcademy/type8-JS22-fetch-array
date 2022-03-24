@@ -13,6 +13,12 @@ function getUsers() {
     })
     .catch((err) => console.log(err.message));
 }
+function singleUserData(id) {
+  fetch(`${baseUrl}/users/${id}`)
+    .then((resp) => resp.json())
+    .then((data) => createSingleUserInfo(data))
+    .catch((err) => console.log(err.message));
+}
 
 // mygtuko paspaudimu parsisiusti visus vartotojus
 usersBtnEl.addEventListener('click', getUsers);
@@ -40,6 +46,22 @@ function makeOneLi(id, name, email, compName) {
 
 function getSingleUser(id) {
   console.log('getSingleUser', id);
+  // parsisiusti vartotojo duomenis
+  singleUserData(id);
+  // sukurti korteles el,
+  // supildyti vartotojo duomenis
+}
+
+function createSingleUserInfo(uObj) {
+  const cardHtml = `
+  <div class="card">
+    <h3>${uObj.name}</h3>
+    <p>Address: street: ${uObj.address.street} town: ${uObj.address.city} zip: ${uObj.address.zipcode} </p>
+    <p>tel: ${uObj.phone} </p>
+    <h4>${uObj.company.catchPhrase}</h4>
+  </div>
+  `;
+  appEl.insertAdjacentHTML('afterbegin', cardHtml);
 }
 
 // mygtuko 'read more' paspaudimu parsiunciam tik nurodyto vartotojo info
@@ -48,3 +70,8 @@ function getSingleUser(id) {
 // 2. turedami id parisiuskite su papildomu fetch info apie ta vartotoja
 // 3. sukurti ir supildyti vartotojo korteles info.
 // 4. atvaizduojam varda, addreso, gatve, miesta ir zip koda, telefona ir catchphrase
+
+// prideti istrynimo mygtuka salia 'more info'
+
+// <button id="sort-by-name">Sort by name ASC</button>
+// isrikiuoti sarasa pagal name
