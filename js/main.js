@@ -2,17 +2,24 @@ console.log('main');
 const baseUrl = 'https://jsonplaceholder.typicode.com';
 // nusitaikom i mygtuka ir app el
 const usersBtnEl = document.getElementById('user-btn');
+const usersSortBtnEl = document.getElementById('sort-by-name');
 const appEl = document.getElementById('app');
 
-function getUsers() {
+function getUsers(doYouNeedToSort) {
   fetch(`${baseUrl}/users`)
     .then((resp) => resp.json())
     .then((data) => {
       console.log('data ===', data);
+
+      if (doYouNeedToSort === true) {
+        data.sort((a, b) => (a.name > b.name ? 1 : -1));
+      }
+
       generateUsersList(data);
     })
     .catch((err) => console.log(err.message));
 }
+
 function singleUserData(id) {
   fetch(`${baseUrl}/users/${id}`)
     .then((resp) => resp.json())
@@ -26,6 +33,7 @@ usersBtnEl.addEventListener('click', getUsers);
 // is gautu duomenu sugeneruoti li elementus (button)
 // sugeneruoti ol el, ir sudeti i ji li elementus. ol el patalpini appEl
 function generateUsersList(usersArr) {
+  appEl.innerHTML = null;
   const olEl = document.createElement('ol');
   usersArr.forEach((uObj) => {
     const madeLi = makeOneLi(uObj.id, uObj.name, uObj.email, uObj.company.name);
@@ -75,3 +83,4 @@ function createSingleUserInfo(uObj) {
 
 // <button id="sort-by-name">Sort by name ASC</button>
 // isrikiuoti sarasa pagal name
+usersSortBtnEl.addEventListener('click', () => getUsers(true));
